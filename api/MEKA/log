@@ -1,0 +1,2 @@
+[yy2012_pharm_chem.arff]
+@attribute has to be change from numeric to {0, 1} (binary)
