@@ -1,3 +1,4 @@
+###
 chem_100 <- chem_100[rep(1:nrow(pharm_100), times = apply(pharm_100, 1, sum)), ]
 
 labels <- c()
@@ -6,21 +7,21 @@ for(i in 1:nrow(pharm[1:100, ])) {
 }
 
 chem_100 <- cbind(chem_100, LABEL = labels)
-
 ###
 
+###
 plot(nb_roc)
 plot(knn_roc, col = "blue", add = TRUE)
 plot(rpart_roc, col = "red", add = TRUE)
 legend("topright", legend = c("NB", "KNN", "RPART"), col = c("black", "blue", "red"), lwd = 2)
-
 ###
 
+###
 test <- as.data.frame(bio.newpred)
 which.max(test[!is.na(match(rownames(test), 2337)), ])
+###
 
 ### Package: mldr ###
-
 chem_pharm <- data.frame(chem, pharm)
 
 library(mldr)
@@ -49,23 +50,23 @@ pharm[5, 1279]
 # [1] 1
 pred_matrix[5, 1279]
 # [1] 1
-
 ###
 
+### Command: funtional as label powerset (LP) muti-labels transforming
 pharm_glue <- as.data.frame(apply(pharm, 1, paste, collapse=""))
 colnames(pharm_glue) <- "LABEL"
+###
 
-### Action: check antidepressant info. ###
-
+### Command: check antidepressant info.
 # ex. PubChem Id: 3386
 which(rownames(biomat) == 3386)
 # [1] 204
 colnames(biomat[, which(biomat[204, ] == 1)])
 # [1] "AOFB_HUMAN"  "SC6A4_HUMAN"
+###
 
-### Action: separate antidepressant from data set
-
-# Known antidepressant PubChem CId
+### Preprocessing: separate antidepressant from data set (One time preprocessing)
+# Known antidepressant PubChem CID
 antidepressant_list <- c(6434118, 76968116, 76962653, 76960151, 76956911, 73416972, 73416962, 73416955, 73416810, 73416655, 23663953, 15893898, 9884029, 6603149, 6434754, 6433351, 6420022, 6419921, 5353833, 5284550, 5282426, 5282425, 5282318, 5281088, 3045275, 667477, 667468, 443945, 441358, 439280, 198375, 171003, 146571, 146570, 121249, 101726, 71587, 71478, 71424, 68870, 68551, 68539, 65700, 65327, 62884, 62857, 34870, 34869, 33611, 25382, 25381, 22576, 21722, 21087, 21086, 11065, 9419, 9417, 8228, 6305, 5666, 5584, 5355, 5092, 4976, 4543, 4205, 4184, 4011, 3947, 3696, 3386, 3158, 2995, 2895, 2801, 2771, 2160, 444, 144)
 
 antidepressant_idx <- which(rownames(chemmat) %in% antidepressant_list)
@@ -73,3 +74,40 @@ antidepressant <- chemmat[antidepressant_idx, ]
 write.csv(antidepressant_data, "antidepressant_chem.csv")
 without_antidepressant <- chemmat[-antidepressant_idx,]
 write.csv(without_antidepressant, "without_antidepressant_chem.csv")
+###
+
+### Preprocessing: change label factor from numeric to character (One time preprocessing)
+without_antidepressant_bio <- as.data.frame(apply(without_antidepressant_bio, 2, factor, levels = c(0, 1), label = c("no", "yes")))
+###
+
+### Preprocessing: parallel computing
+library(doParallel)
+cl <- makeCluster(detectCores())
+registerDoParallel(cl)
+# - machine learning code goes in here - #
+stopCluster(cl)
+# unregister (cancel parallel computing)
+registerDoSEQ()
+###
+
+### Action: build a binary relevance training set
+training_set <- as.data.frame(cbind(without_antidepressant_chem, without_antidepressant_bio[, 1]))
+training_set <- as.data.frame(cbind(without_antidepressant_chem, LABEL = without_antidepressant_bio[, 1]))
+###
+
+### Action: train the model with resampling training set prior to training
+down_training_set <- downSample(training_set[, -ncol(training_set)], training_set$LABEL, yname = "LABEL")
+# High performance with very long computational time (not yet try to tune the parameter)
+up_training_set <- upSample(training_set[, -ncol(training_set)], training_set$LABEL, yname = "LABEL")
+# [Current choice] computational cost and performanerce dilemma: perc.over = 1000, perc.under = 250 (current optimal)
+smote_training_set <- SMOTE(LABEL ~ ., training_set, perc.over = 1000, perc.under = 250)
+# Good performanerce with quite expensive computational cost (not yet try to tune the parameter )
+rose_training_set <- ROSE(LABEL ~ ., training_set)$data
+
+train_control <- trainControl(method = "cv", number = 5, classProbs = TRUE, summaryFunction = twoClassSummary)
+model <- train(Class ~ ., data = down_training_set, trControl = train_control, method = "knn", tuneLength = 10, metric = "Sens")
+
+### Action: performance measurement
+predict_result <- predict(model, antidepressant_chem)
+confusionMatrix(predict_result, antidepressant_bio[, 1])
+###
