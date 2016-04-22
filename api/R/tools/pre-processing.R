@@ -1,0 +1,14 @@
+### Separate antidepressant from data set (one time process)
+# known antidepressant PubChem CID
+antidepressant_list <- c(6434118, 76968116, 76962653, 76960151, 76956911, 73416972, 73416962, 73416955, 73416810, 73416655, 23663953, 15893898, 9884029, 6603149, 6434754, 6433351, 6420022, 6419921, 5353833, 5284550, 5282426, 5282425, 5282318, 5281088, 3045275, 667477, 667468, 443945, 441358, 439280, 198375, 171003, 146571, 146570, 121249, 101726, 71587, 71478, 71424, 68870, 68551, 68539, 65700, 65327, 62884, 62857, 34870, 34869, 33611, 25382, 25381, 22576, 21722, 21087, 21086, 11065, 9419, 9417, 8228, 6305, 5666, 5584, 5355, 5092, 4976, 4543, 4205, 4184, 4011, 3947, 3696, 3386, 3158, 2995, 2895, 2801, 2771, 2160, 444, 144)
+
+antidepressant_idx <- which(rownames(chemmat) %in% antidepressant_list)
+antidepressant <- chemmat[antidepressant_idx, ]
+write.csv(antidepressant_data, "antidepressant_chem.csv")
+without_antidepressant <- chemmat[-antidepressant_idx,]
+write.csv(without_antidepressant, "without_antidepressant_chem.csv")
+###
+
+### Change label factor from numeric to character (one time process)
+without_antidepressant_bio <- as.data.frame(apply(without_antidepressant_bio, 2, factor, levels = c(0, 1), label = c("no", "yes")))
+###
