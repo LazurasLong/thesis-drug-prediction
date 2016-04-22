@@ -1,27 +1,22 @@
-###
-chem_100 <- chem_100[rep(1:nrow(pharm_100), times = apply(pharm_100, 1, sum)), ]
-
-labels <- c()
-for(i in 1:nrow(pharm[1:100, ])) {
-	labels <- c(labels, colnames(pharm[i, which(pharm[i, ] == 1)]))
-}
-
-chem_100 <- cbind(chem_100, LABEL = labels)
+### Command: check antidepressant info.
+# ex. PubChem Id: 3386
+which(rownames(biomat) == 3386)
+# [1] 204
+colnames(biomat[, which(biomat[204, ] == 1)])
+# [1] "AOFB_HUMAN"  "SC6A4_HUMAN"
 ###
 
-###
-plot(nb_roc)
-plot(knn_roc, col = "blue", add = TRUE)
-plot(rpart_roc, col = "red", add = TRUE)
-legend("topright", legend = c("NB", "KNN", "RPART"), col = c("black", "blue", "red"), lwd = 2)
+### Command: funtional as label powerset (LP) muti-labels transforming
+pharm_glue <- as.data.frame(apply(pharm, 1, paste, collapse=""))
+colnames(pharm_glue) <- "LABEL"
 ###
 
-###
+### Command: find the particular drug's max score index of prediction producing by CCA
 test <- as.data.frame(bio.newpred)
 which.max(test[!is.na(match(rownames(test), 2337)), ])
 ###
 
-### Package: mldr ###
+### Command: mldr package
 chem_pharm <- data.frame(chem, pharm)
 
 library(mldr)
@@ -52,19 +47,6 @@ pred_matrix[5, 1279]
 # [1] 1
 ###
 
-### Command: funtional as label powerset (LP) muti-labels transforming
-pharm_glue <- as.data.frame(apply(pharm, 1, paste, collapse=""))
-colnames(pharm_glue) <- "LABEL"
-###
-
-### Command: check antidepressant info.
-# ex. PubChem Id: 3386
-which(rownames(biomat) == 3386)
-# [1] 204
-colnames(biomat[, which(biomat[204, ] == 1)])
-# [1] "AOFB_HUMAN"  "SC6A4_HUMAN"
-###
-
 ### Preprocessing: separate antidepressant from data set (One time preprocessing)
 # Known antidepressant PubChem CID
 antidepressant_list <- c(6434118, 76968116, 76962653, 76960151, 76956911, 73416972, 73416962, 73416955, 73416810, 73416655, 23663953, 15893898, 9884029, 6603149, 6434754, 6433351, 6420022, 6419921, 5353833, 5284550, 5282426, 5282425, 5282318, 5281088, 3045275, 667477, 667468, 443945, 441358, 439280, 198375, 171003, 146571, 146570, 121249, 101726, 71587, 71478, 71424, 68870, 68551, 68539, 65700, 65327, 62884, 62857, 34870, 34869, 33611, 25382, 25381, 22576, 21722, 21087, 21086, 11065, 9419, 9417, 8228, 6305, 5666, 5584, 5355, 5092, 4976, 4543, 4205, 4184, 4011, 3947, 3696, 3386, 3158, 2995, 2895, 2801, 2771, 2160, 444, 144)
@@ -90,8 +72,11 @@ stopCluster(cl)
 registerDoSEQ()
 ###
 
+### Action: training parameter setting
+train_control <- trainControl(method = "cv", number = 5, classProbs = TRUE, savePredictions = TRUE, summaryFunction = twoClassSummary)
+###
+
 ### Action: build a binary relevance training set
-training_set <- as.data.frame(cbind(without_antidepressant_chem, without_antidepressant_bio[, 1]))
 training_set <- as.data.frame(cbind(without_antidepressant_chem, LABEL = without_antidepressant_bio[, 1]))
 ###
 
@@ -103,11 +88,30 @@ up_training_set <- upSample(training_set[, -ncol(training_set)], training_set$LA
 smote_training_set <- SMOTE(LABEL ~ ., training_set, perc.over = 1000, perc.under = 250)
 # Good performanerce with quite expensive computational cost (not yet try to tune the parameter )
 rose_training_set <- ROSE(LABEL ~ ., training_set)$data
+###
 
-train_control <- trainControl(method = "cv", number = 5, classProbs = TRUE, summaryFunction = twoClassSummary)
-model <- train(Class ~ ., data = down_training_set, trControl = train_control, method = "knn", tuneLength = 10, metric = "Sens")
+### Action: start training model
+model <- train(Class ~ ., data = down_training_set, trControl = train_control, method = "knn", tuneLength = 10, metric = "ROC")
+###
 
-### Action: performance measurement
+predict_result <- list()
+for(i in 1:ncol(without_antidepressant_bio)) {
+	predict_result[[i]] <- predict(chem_bio_model[[i]]$finalModel, antidepressant_chem)
+}
+
+testing_set_predict_result <- data.frame(row.names = row.names(antidepressant_bio))
+for(i in 1:ncol(antidepressant_bio)) {
+	testing_set_predict_result <- cbind(testing_set_predict_result, predict_result[[i]][, 2])
+}
+colnames(testing_set_predict_result) <- colnames(antidepressant_chem)
+
+### Action: performance evaluation
 predict_result <- predict(model, antidepressant_chem)
 confusionMatrix(predict_result, antidepressant_bio[, 1])
+
+# plot roc curve (TO BE MODIFIED)
+plot(nb_roc)
+plot(knn_roc, col = "blue", add = TRUE)
+plot(rpart_roc, col = "red", add = TRUE)
+legend("topright", legend = c("NB", "KNN", "RPART"), col = c("black", "blue", "red"), lwd = 2)
 ###
