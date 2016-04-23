@@ -1,3 +1,7 @@
+### Save model
+save(knn_pharm_bio_model, file = "knn-pharm-bio-model698-1368.RData")
+###
+
 ### Check antidepressant info.
 # ex. PubChem Id: 3386
 which(rownames(biomat) == 3386)

@@ -1,4 +1,5 @@
 ### Manually combine all different threshold (here: 0.0 ~ 1.0) confusion matrix into one list
+confusion_matrix_list <- NULL
 l <- 1
 for(i in seq(from = 0, to = 1, by = 0.1)) {
 	sum_confusion_matrix <- 0
@@ -11,6 +12,9 @@ for(i in seq(from = 0, to = 1, by = 0.1)) {
 ###
 
 ### Combine all different threshold (here: 0.0 ~ 1.0) confusion matrix into one list
+pred <- melt(testing_predict_result, measure.vars = colnames(testing_predict_result))[, 2]
+obs <- melt(antidepressant_bio, measure.vars = colnames(antidepressant_bio))[, 2]
+
 knn_chem_pred_bio_confusion_matrix_list <- NULL
 for(i in seq(from = 0, to = 1, 0.1)) {
 	tmp <- pred
