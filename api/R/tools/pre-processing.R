@@ -4,11 +4,105 @@ antidepressant_list <- c(6434118, 76968116, 76962653, 76960151, 76956911, 734169
 
 antidepressant_idx <- which(rownames(chemmat) %in% antidepressant_list)
 antidepressant <- chemmat[antidepressant_idx, ]
-write.csv(antidepressant_data, "antidepressant_chem.csv")
+write.csv(antidepressant_data, "antidepressant-chem.csv")
 without_antidepressant <- chemmat[-antidepressant_idx,]
-write.csv(without_antidepressant, "without_antidepressant_chem.csv")
+write.csv(without_antidepressant, "without-antidepressant-chem.csv")
 ###
 
 ### Change label factor from numeric to character (one time process)
 without_antidepressant_bio <- as.data.frame(apply(without_antidepressant_bio, 2, factor, levels = c(0, 1), label = c("no", "yes")))
+###
+
+### Data loading
+# build up chemical fingerprints data set by using Package ChemmineR and sdf files downloaded from PubChem database
+# [PubChem download page]
+# https://pubchem.ncbi.nlm.nih.gov/pc_fetch/pc_fetch.cgi
+library(ChemmineR)
+sdfset <- read.SDFset("compounds-with-side-effects-information (SDF).sdf")
+# Warning message:
+# In read.SDFset("compounds-with-side-effects-information (SDF).sdf") :
+#   24 invalid SDFs detected. To fix, run: valid <- validSDF(sdfset); sdfset <- sdfset[valid]
+valid <- validSDF(sdfset)
+sdfset <- sdfset[valid]
+cid(sdfset) <- sdfid(sdfset)
+fpset <- fp2bit(sdfset)
+tmp <- as.matrix(fpset)
+
+# build up phenotypic data set from files downloaded from DrugBank and Sider databases
+# [Sider link]
+# http://sideeffects.embl.de/media/download/meddra_all_se.tsv.gz
+tmp <- read.csv("sider-all-se.csv")
+# remove PubChem CID prefix "CID0...0"
+tmp[, 2] <- apply(tmp[, 2, drop = FALSE], 2, function(x) { gsub("CID0+", "", x) })
+tmp[, 2] <- as.numeric(tmp[, 2])
+# remove duplicate side effects and sort data in alphabetical order for later use as column names
+col_name <- sort(unique(tmp[, 6]))
+pheno <- as.data.frame(matrix(0, nrow = nrow(chem), ncol = length(col_name)))
+row.names(pheno) <- rownames(chem)
+colnames(pheno) <- pheno_name
+
+for(i in 1:nrow(tmp)) {
+  row_index <- which(rownames(pheno) == tmp[i, 2])
+  col_index <- which(colnames(pheno) == tmp[i, 6])
+  # ensure side effect associated PubChem CID exists in chemical fingerprints data set
+  if(length(row_index) != 0)
+    pheno[row_index, col_index] <- 1
+}
+
+# build up bio data set from files downloaded from DrugBank
+# [DrugBank links]
+# http://www.drugbank.ca/releases/4-5-0/downloads/all-drug-links
+# http://www.drugbank.ca/releases/4-5-0/downloads/target-all-polypeptide-ids
+# http://www.drugbank.ca/releases/4-5-0/downloads/enzyme-all-polypeptide-ids
+# http://www.drugbank.ca/releases/4-5-0/downloads/carrier-all-polypeptide-ids
+# http://www.drugbank.ca/releases/4-5-0/downloads/transporter-all-polypeptide-ids
+
+# tmp[, 7]   : Uniprot.Title
+# tmp[, 13]  : DrugBank ID
+# links[, 1] : DrugBank ID
+# links[, 7] : PubChem CID
+
+# manually combine all the data sets into drugbank-all-bio.csv in excel
+tmp <- read.csv("drugbank-all-bio.csv")
+links <- read.csv("drugbank-all-drug-links.csv")
+# remove duplicate Uniprot title and sort data in alphabetical order for later use as column names
+col_name <- sort(unique(tmp[, 7]))
+bio <- as.data.frame(matrix(0, nrow = nrow(chem), ncol = length(col_name)))
+rownames(bio) <- rownames(chem)
+colnames(bio) <- col_name
+
+for(i in 1:nrow(tmp)) {
+  col_index <- which(colnames(bio) == tmp[i, 7])
+  # split string of DrugBank IDs into vector
+  drugbank_ids <- unlist(strsplit(as.character(tmp[i, 13]), ";."))
+  for(j in 1:length(drugbank_ids)) {
+    # find PubChem CID associated with DrugBank ID
+    links_row_index <- which(links[, 1] == drugbank_ids[j])
+    pubchem_cid <- links[links_row_index, 7]
+    row_index <- which(rownames(bio) == pubchem_cid)
+    # ensure bio associated PubChem CID exists in chemical fingerprints data set
+    if(length(row_index) != 0)
+      bio[row_index, col_index] <- 1
+  }
+}
+###
+
+### Data cleaning
+# remove features with all 0s (no information gain)
+bio_cleaned <- bio[, -which(colSums(bio) == 0)]
+chem_cleaned <- chem[, -which(colSums(chem) == 0)]
+pheno_cleaned <- pheno[, -which(colSums(pheno) == 0)]
+
+# remove compunds with all 0s
+# get the intersected index of all the data sets
+# > which(rowSums(chem) == 0)
+# named integer(0)
+# > which(rowSums(pheno) == 0)
+# named integer(0)
+# > length(which(rowSums(bio) == 0))
+# [1] 713
+removed_index <- which(rowSums(bio) == 0)
+bio_cleaned <- bio_cleaned[-removed_index,]
+chem_cleaned <- chem_cleaned[-removed_index,]
+pheno_cleaned <- pheno_cleaned[-removed_index,]
 ###
