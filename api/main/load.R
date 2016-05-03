@@ -11,10 +11,6 @@ if(!require("CCA"))
   install.packages("CCA")
 if(!require("ROCR"))
   install.packages("ROCR")
-if(!require("ggplot2"))
-  install.packages("ggplot2")
-if(!require("RColorBrewer"))
-  install.packages("RColorBrewer")
 
 ### Build up chemical fingerprints data set by using Package ChemmineR and sdf files downloaded from PubChem database
 ### Pre-extracted a list of PubChem compounds CID with side effects information in file: "compounds-with-side-effects-information (PubChemCID).csv"

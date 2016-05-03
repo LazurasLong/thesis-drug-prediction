@@ -9,3 +9,7 @@ options(scipen = 999)
 ### Start parallel computing
 cl <- makeCluster(detectCores())
 registerDoParallel(cl)
+
+### Stop parallel computing
+# stopCluster(cl)
+# registerDoSEQ()
