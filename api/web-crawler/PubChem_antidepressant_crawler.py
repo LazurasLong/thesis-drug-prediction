@@ -1,5 +1,4 @@
 ### This script crawls the first page of PubChem antidepressant CID. (20 drugs/page) ###
-
 import scrapy
 from scrapy.selector import Selector
 

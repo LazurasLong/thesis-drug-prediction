@@ -9,8 +9,16 @@ if(!require("PMA"))
   install.packages("PMA")
 if(!require("CCA"))
   install.packages("CCA")
+if(!require("kernlab"))
+  install.packages("kernlab")
+if(!require("randomForest"))
+  install.packages("randomForest")
 if(!require("ROCR"))
   install.packages("ROCR")
+if(!require("reshape2"))
+  install.packages("reshape2")
+if(!require("dplyr"))
+  install.packages("dplyr")
 
 ### Build up chemical fingerprints data set by using Package ChemmineR and sdf files downloaded from PubChem database
 ### Pre-extracted a list of PubChem compounds CID with side effects information in file: "compounds-with-side-effects-information (PubChemCID).csv"
@@ -61,6 +69,7 @@ if(!exists("pheno")) {
   } else
     print("Error: couldn't find the required file: sider-all-se.csv")
 }
+
 ### Build up bio data set from files downloaded from DrugBank
 ### [DrugBank links]
 ### http://www.drugbank.ca/releases/4-5-0/downloads/all-drug-links

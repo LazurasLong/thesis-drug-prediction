@@ -1,5 +1,4 @@
 ### This script crawls the "offline" full antidepressant drugs of PubChem CID (80 drugs in total) ###
-
 from __future__ import print_function
 from bs4 import BeautifulSoup
 
