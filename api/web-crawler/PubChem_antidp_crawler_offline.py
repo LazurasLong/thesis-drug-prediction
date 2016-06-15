@@ -2,7 +2,7 @@
 from __future__ import print_function
 from bs4 import BeautifulSoup
 
-with open('PubChem_antidepressant.html', 'r') as file:
+with open('PubChem_antidp.html', 'r') as file:
     page_content = file.read()
     soup = BeautifulSoup(page_content, "lxml")
 
