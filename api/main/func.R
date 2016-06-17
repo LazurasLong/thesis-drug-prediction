@@ -238,7 +238,7 @@ cal_zscore <- function(x) {
   x
 }
 
-### Convert original matrix into score matrix with format: Drug | Target/ADR | Score, sort by score in descending order
+### Convert original matrix into score matrix with format: Drug | Target/SE | Score, sort by score in descending order
 make_score_matrix <- function(m) {
   sm <- matrix(0, nrow = nrow(m) * ncol(m), ncol = 3)
   k <- 1
@@ -253,7 +253,7 @@ make_score_matrix <- function(m) {
   sm <- sm[order(sm[, 3], decreasing = T), ]
 }
 
-### Convert predict and observe matrices into frequency matrix with format: Subject(ADR or Target) | State(Predict or Observe) | Count, sort by ADR/Target in alphabetical order
+### Convert predict and observe matrices into frequency matrix with format: Subject(SE or Target) | State(Predict or Observe) | Count, sort by SE/Target in alphabetical order
 make_freq_matrix <- function(predm, obsm) {
   tmp <- apply(predm, 2, sum)
   tmp <- tmp[tmp != 0]

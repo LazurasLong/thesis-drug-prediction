@@ -3,13 +3,13 @@ library(ggnet)
 library(ggplot2)
 library(ggthemes)
 
-test <- seq(200, 2614, 200)
-test[13] <- 2614
+tmp <- seq(200, 2614, 200)
+tmp[13] <- 2614
 j <- 1
 k <- 1
-for(i in test) {
-  png(paste0("antidp-adr-freq (barplot visualization)-", k, ".png"), units = "px", width = 3200, height = 1600, res = 300)
-  print(ggplot(rf_antidp_chem_plus_bio_pred_pheno_fcutoff_and_obs[j:i, ], aes(x = ADR, y = Count, fill = State)) + geom_bar(position = "identity", stat = "identity", alpha = .5) + labs(fill = "") + theme(text = element_text(size = 8), axis.text.x = element_text(angle = 90, vjust = 0.3, hjust = 1)) + theme(panel.background = element_blank(), plot.background = element_rect(fill = "#f8f2e4"), legend.background = element_blank()) + scale_fill_stata())
+for(i in tmp) {
+  png(paste0("antidp-se-freq (barplot visualization)-", k, ".png"), units = "px", width = 3200, height = 1600, res = 300)
+  print(ggplot(rf_antidp_chem_plus_bio_pred_pheno_fcutoff_and_obs[j:i, ], aes(x = SE, y = Count, fill = State)) + geom_bar(position = "identity", stat = "identity", alpha = .5) + labs(fill = "") + xlab("Side Effect") + theme(text = element_text(size = 8), axis.text.x = element_text(angle = 90, vjust = 0.3, hjust = 1)) + theme(panel.background = element_blank(), plot.background = element_rect(fill = "#f8f2e4"), legend.background = element_blank()) + scale_fill_stata())
   dev.off()
   j <- i
   k <- k + 1
@@ -31,7 +31,7 @@ j <- 1
 k <- 1
 for(i in tmp) {
     png(paste0("rf-antidp-chem-plus-bio-pred-pheno (network visualization)-", k, ".png"), units = "px", width = 3200, height = 1600, res = 300)
-    print(ggnet2(network(rf_antidp_chem_plus_bio_pred_pheno_fcutoff_cleaned[, i:j], directed = T), color = "mode", palette = "Set1", label = T, label.alpha = 0.8, label.size = 2, alpha = 0.7, edge.size = 0.25, edge.alpha = 1, edge.color = "grey", size = "degree", size.legend = "Degree", size.cut = 5, size.min = 1, mode = "circle") + theme_wsj() + scale_color_stata(labels = c("actor" = "Drug", "event" = "ADR"), name = "") + guides(size = guide_legend(order = 1), colour = guide_legend(order = 2)))
+    print(ggnet2(network(rf_antidp_chem_plus_bio_pred_pheno_fcutoff_cleaned[, i:j], directed = T), color = "mode", palette = "Set1", label = T, label.alpha = 0.8, label.size = 2, alpha = 0.7, edge.size = 0.25, edge.alpha = 1, edge.color = "grey", size = "degree", size.legend = "Degree", size.cut = 5, size.min = 1, mode = "circle") + theme_wsj() + scale_color_stata(labels = c("actor" = "Drug", "event" = "Side Effect"), name = "") + guides(size = guide_legend(order = 1), colour = guide_legend(order = 2)))
     dev.off()
     j <- i
     k <- k + 1
