@@ -16,7 +16,7 @@ for(i in tmp) {
 }
 
 png("antidp-target-freq (barplot visualization).png", units = "px", width = 3200, height = 1600, res = 300)
-print(ggplot(rf_antidp_chem_plus_pheno_pred_bio_fcutoff_and_obs, aes(x = Target, y = Count, fill = State)) + geom_bar(position = "identity", stat = "identity", alpha = .5) + labs(fill = "") + theme(text = element_text(size = 8), axis.text.x = element_text(angle = 90, vjust = 0.3, hjust = 1)) + theme(panel.background = element_blank(), plot.background = element_rect(fill = "#f8f2e4"), legend.background = element_blank()) + scale_fill_wsj("colors6", ""))
+print(ggplot(rf_antidp_chem_plus_pheno_pred_bio_fcutoff_and_obs, aes(x = Target, y = Count, fill = State)) + geom_bar(stat = "identity", alpha = .5) + labs(fill = "") + theme(text = element_text(size = 8), axis.text.x = element_text(angle = 90, vjust = 0.3, hjust = 1)) + theme(panel.background = element_blank(), plot.background = element_rect(fill = "#f8f2e4"), legend.background = element_blank()) + scale_fill_wsj("colors6", ""))
 dev.off()
 ###
 

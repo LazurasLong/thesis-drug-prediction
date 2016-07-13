@@ -1,7 +1,6 @@
-### Current parameter setting: c1 = 0.1, c2 = 0.1, ncomp = 80
 scca <- function(x, y, c1 = 0.1, c2 = 0.1, ncomp = 80) {
   result <- CCA(x = x, z = y, typex = "standard", typez = "standard", penaltyx = c1, penaltyz = c2, K = ncomp, trace = FALSE, standardize = FALSE)
-  ### NOT SURE IF IT'S ALRIGHT
+  ### DON'T KNOW WHY
   # adjustment of positive and negatieve
 #  for(i in 1:ncomp) {
 #    if(result$u[order(abs(result$u[, i]), decreasing = T)[1], i] < 0) {
@@ -59,7 +58,7 @@ scca_pred <- function(x, y, pred) {
   pred_score
 }
 
-### try sigma = 0.008, C = 2
+### Current parameter setting: sigma = 0.2, C = 1
 svm_pred <- function(x, y, pred) {
   pred_score <- matrix(0, nrow(pred), ncol(y))
   for(i in 1:ncol(y)) {
@@ -94,7 +93,6 @@ rf_pred <- function(x, y, pred) {
   pred_score
 }
 
-### try k = 55
 knn_pred <- function(x, y, pred, k = 50) {
   pred_score <- matrix(0, nrow(pred), ncol(y))
   score <- pred %*% t(x)
@@ -190,7 +188,7 @@ eval_auroc <- function(pred, obs, color = "black", plot = FALSE, show_threshold 
     cutoff <- best_cutoff(rocr_result, rocr_pred)
     plot(rocr_result, col = color, add = add, xlim = c(0, 1), ylim = c(0, 1))
     if(show_threshold) {
-      text <- paste0("Threshold: ", round(cutoff[3], 5), "\nAUC: ", round(auc, 5), "\n(", round(cutoff[1], 2), ", ", round(cutoff[2], 2), ")")
+      text <- paste0("Threshold: ", round(cutoff[3], 5), "\nAUROC: ", round(auc, 5), "\n(", round(cutoff[1], 2), ", ", round(cutoff[2], 2), ")")
       text(cutoff[1], cutoff[2], labels = text, cex = 0.7, pos = 3, col = color)
       points(cutoff[1], cutoff[2], pch = 20, col = color)
     }
@@ -229,12 +227,15 @@ best_fcutoff <- function(pred, obs) {
 
 ### Calculate Z-Score
 cal_zscore <- function(x) {
-  mean <- mean(x)
-  sd <- sd(x)
-  if(sd == 0)
-    sd <- 1
-  x <- x - matrix(mean, nrow(x), ncol(x), byrow = TRUE)
-  x <- x * matrix(1/sd, nrow(x), ncol(x), byrow = TRUE)
+  # avoid repeating calculations
+  if(round(sd(x)) != 1) {
+    mean <- mean(x)
+    sd <- sd(x)
+    if(sd == 0)
+      sd <- 1
+    x <- x - matrix(mean, nrow(x), ncol(x), byrow = TRUE)
+    x <- x * matrix(1/sd, nrow(x), ncol(x), byrow = TRUE)
+  }
   x
 }
 
@@ -269,7 +270,7 @@ make_freq_matrix <- function(predm, obsm) {
   colnames(tmp2) <- c("Observe", "Subject")
   colnames(tmp) <- c("Predict", "Subject")
   fm <- merge(tmp, tmp2, all = T)
-  fm3[is.na(fm)] <- 0
+  fm[is.na(fm)] <- 0
   colnames(fm) <- c("Subject", "Predict", "Observe")
   fm <- melt(fm)
   colnames(fm) <- c("Subject", "State", "Count")
