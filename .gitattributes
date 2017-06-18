@@ -1,3 +1,3 @@
-/* Help linguist correct identify the programming language using in this project */
-data/* linguist-vendored
-result/* linguist-vendored
+api/data/* linguist-vendored
+api/result/* linguist-vendored
+api/web-crawler/PubChem_antidp.html linguist-vendored
