@@ -1,3 +1,3 @@
-api/data/* linguist-vendored
-api/result/* linguist-vendored
-api/web-crawler/PubChem_antidp.html linguist-vendored
+data/* linguist-vendored
+result/* linguist-vendored
+web-crawler/PubChem_antidp.html linguist-vendored

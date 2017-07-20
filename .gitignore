@@ -1,6 +1,7 @@
+.gitignore
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
-api/result/excel/rf-chem-intersect-bio-predict-pheno.csv
-api/result/excel/rf-chem-predict-pheno.csv
+result/excel/rf-chem-intersect-bio-predict-pheno.csv
+result/excel/rf-chem-predict-pheno.csv
