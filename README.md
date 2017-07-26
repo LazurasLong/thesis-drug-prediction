@@ -4,7 +4,7 @@ Predicting drug side effects and targets using machine learning approaches - a c
 
 ## Introduction
 
-The purpose of study is to develop a computational approach to investigate potential side effects and targets of antidepressants, hoping to provide support for better strategies for the future of drug development and therapy.
+The purpose of our study is to develop a computational approach to investigate potential side effects and targets of antidepressants, hoping to provide support for better strategies for the future of drug development and therapy.
 
 ## Methodology
 
