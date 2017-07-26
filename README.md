@@ -43,6 +43,8 @@ The purpose of our study is to develop a computational approach to investigate p
   * AUROC score of 0.9140834, AUPR score of 0.5185952 for side effects prediction
   * AUROC score of 0.9513566, AUPR score of 0.3101223 for targets prediction
 
+<img src="https://raw.githubusercontent.com/rubychi/thesis-drug-prediction/master/imgs/Results%20and%20performance%20evaluation%201.jpg" alt="Experimental design 2" width="50%" height="50%"><img src="https://raw.githubusercontent.com/rubychi/thesis-drug-prediction/master/imgs/Results%20and%20performance%20evaluation%202.jpg" alt="Experimental design 2" width="50%" height="50%">
+
 ## Discussion and conclusion
 
 
