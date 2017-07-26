@@ -20,7 +20,7 @@ The purpose of our study is to develop a computational approach to investigate p
   * 984 biological features
   * 6,111 phenotypic features
   
-* Implemented the computational framework using four machine learning-based algorithms:
+* Implemented the computational framework using four machine learning-based algorithms
 
   * Random Forest (RF)
   * k-Nearest Neighbors (kNN)
