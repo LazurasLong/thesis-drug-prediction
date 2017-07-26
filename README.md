@@ -27,7 +27,8 @@ The purpose of study is to develop a computational approach to investigate poten
   
 * The aggregation random forest model achieved best in overall performance among these algorithms
 
-![alt text](https://raw.githubusercontent.com/rubychi/thesis-drug-prediction/master/imgs/Methodology.png)
+<img src="https://raw.githubusercontent.com/rubychi/thesis-drug-prediction/master/imgs/Methodology%201.png" alt="alt text">
+<img src="https://raw.githubusercontent.com/rubychi/thesis-drug-prediction/master/imgs/Methodology%202.png" alt="alt text">
 
 ## Results and performance evaluation
 
