@@ -12,7 +12,7 @@ The purpose of study is to develop a computational approach to investigate poten
 <img src="https://raw.githubusercontent.com/rubychi/thesis-drug-prediction/master/imgs/Experimental%20design%201.jpg" alt="alt text" width="70%" height="70%">
 <img src="https://raw.githubusercontent.com/rubychi/thesis-drug-prediction/master/imgs/Experimental%20design%202.jpg" alt="alt text" width="70%" height="70%">
 
-* Presented an aggregation framework to predict unknown side effects and hidden targets from 816 drugs by adopting:
+* Presented an aggregation framework to predict unknown side effects and hidden targets from 816 drugs by adopting
 
   * 653 chemical features
   * 984 biological features
@@ -31,13 +31,13 @@ The purpose of study is to develop a computational approach to investigate poten
 
 ## Results and performance evaluation
 
-* Conducted the case study using 15 depression-related drugs, including:
+* Conducted the case study using 15 depression-related drugs, including
 
   * 9 first generation antidepressants
   * 5 second generation antidepressants
   * 1 muscle relaxant that has a structure similar to tricyclic antidepressant (TCA)
 
-* The in silico model obtained promising results with:
+* The in silico model obtained promising results with
 
   * AUROC score of 0.9140834, AUPR score of 0.5185952 for side effects prediction
   * AUROC score of 0.9513566, AUPR score of 0.3101223 for targets prediction
