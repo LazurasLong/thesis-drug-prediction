@@ -40,7 +40,7 @@ The purpose of our study is to develop a computational approach to investigate p
   * 5 second generation antidepressants
   * 1 muscle relaxant that has a structure similar to tricyclic antidepressant (TCA)
 
-* The aggregation random forest in silico model obtained promising results with
+* The aggregation random forest model obtained promising results with
 
   * AUROC score of 0.9140834, AUPR score of 0.5185952 for side effects prediction
   * AUROC score of 0.9513566, AUPR score of 0.3101223 for targets prediction
