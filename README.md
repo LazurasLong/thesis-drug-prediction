@@ -8,6 +8,10 @@ The purpose of study is to develop a computational approach to investigate poten
 
 ## Methodology
 
+* Experimental design
+<img src="https://raw.githubusercontent.com/rubychi/thesis-drug-prediction/master/imgs/Experimental%20design%201.jpg" alt="alt text" width="70%" height="70%">
+<img src="https://raw.githubusercontent.com/rubychi/thesis-drug-prediction/master/imgs/Experimental%20design%202.jpg" alt="alt text" width="70%" height="70%">
+
 * Presented an aggregation framework to predict unknown side effects and hidden targets from 816 drugs by adopting:
 
   * 653 chemical features
@@ -20,8 +24,10 @@ The purpose of study is to develop a computational approach to investigate poten
   * k-Nearest Neighbors (kNN)
   * Support Vector Machines (SVM)
   * Sparse Canonical Correlation Analysis (SCCA)
-
+  
 * The aggregation random forest model achieved best in overall performance among these algorithms
+
+![alt text](https://raw.githubusercontent.com/rubychi/thesis-drug-prediction/master/imgs/Methodology.png)
 
 ## Results and performance evaluation
 
@@ -37,6 +43,9 @@ The purpose of study is to develop a computational approach to investigate poten
   * AUROC score of 0.9513566, AUPR score of 0.3101223 for targets prediction
 
 ## Discussion and conclusion
+
+
+<img src="https://raw.githubusercontent.com/rubychi/thesis-drug-prediction/master/result/visualization/barplot/antidp-target-freq%20(barplot%20visualization).png" alt="alt text">
 
 To summarize the prediction results of antidepressants, totally 2662 unknown drug-side effect associations and 309 hidden drug-target associations were predicted using F-measure as the cutoff threshold.
 Among 1307 side effects, 289 were predicted to have associations with more than 10 drugs. Among 599 drug-target associations, 290 are known, 309 are predicted and 54 of them were successfully validated through literature.
