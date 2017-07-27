@@ -70,6 +70,7 @@ In future work, it is expected to gain more knowledge by enlarging the sample da
 
 *<p align="center">
 <img src="https://raw.githubusercontent.com/rubychi/thesis-drug-prediction/master/result/visualization/network/rf_antidp_chem_plus_pheno_pred_bio_SSRI%20(network%20visualization).png" alt="Discussion and conclusion">
-Figure: A detailed exploration into the drug-target associations of three SSRIs - citalopram, escitalopram and fluoxetine<br>
-Solid line indicates a known association, long dash line implies a prediction while red dotted line shows a validated
-association.</p>*
+Figure: A detailed exploration into the drug-target associations of three SSRIs - citalopram, escitalopram and fluoxetine<br></p>*
+
+*Solid line indicates a known association, long dash line implies a prediction while red dotted line shows a validated
+association.*
