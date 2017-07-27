@@ -14,7 +14,9 @@ The purpose of our study is to develop a computational approach to investigate p
 <img src="https://raw.githubusercontent.com/rubychi/thesis-drug-prediction/master/imgs/Experimental%20design%202.jpg" alt="Experimental design 2" width="70%" height="70%">
 </p>
 
-*<p align="center">Figure: An aggregation framework for side effects and targets prediction</p>*
+*<p align="center">Figure: An aggregation framework for side effects and targets prediction<br></p>*
+
+*Grey arrows indicate where our model performed the machine learning algorithm to predict side effects or targets of drug compounds. Features were derived from PubChem, DrugBank 4.0 and SIDER 4.1 online databases. White gradient arrow shows data flow for final predicted profile obtained from the aggregation of previous results.*
 
 * Presented an aggregation framework to predict unknown side effects and hidden targets from 816 drugs by adopting
 
@@ -68,6 +70,7 @@ In future work, it is expected to gain more knowledge by enlarging the sample da
 
 *<p align="center">
 <img src="https://raw.githubusercontent.com/rubychi/thesis-drug-prediction/master/result/visualization/network/rf_antidp_chem_plus_pheno_pred_bio_SSRI%20(network%20visualization).png" alt="Discussion and conclusion">
-Figure: A detailed exploration into the drug-target associations of three SSRIs - citalopram, escitalopram and fluoxetine<br>
-Solid line indicates a known association, long dash line implies a predicted association while red dotted line shows a validated
-association.</p>*
+Figure: A detailed exploration into the drug-target associations of three SSRIs - citalopram, escitalopram and fluoxetine<br></p>*
+
+*Solid line indicates a known association, long dash line implies a predicted association while red dotted line shows a validated
+association.*
