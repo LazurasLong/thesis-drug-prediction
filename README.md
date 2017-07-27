@@ -4,7 +4,7 @@ Predicting drug side effects and targets using machine learning approaches - a c
 
 ## Introduction
 
-The purpose of our study is to develop a computational approach to investigate potential side effects and targets of antidepressants, hoping to provide support for better strategies for the future of drug development and therapy.
+Depression is a life-threatening mental health disorder which is expected to be the second leading cause of psychosocial disability throughout the world by 2020. Despite the availability of various therapeutic options, the underlying pathological mechanisms remain unclear. The important concerns with antidepressants are delayed therapeutic response and insufficient efficacy. With a wide range of adverse effects, there is no doubt a large unmet need for better pharmaceutical treatment. The purpose of our study is to develop a computational approach to investigate potential side effects and targets of antidepressants, hoping to provide support for better strategies for the future of drug development and therapy.
 
 ## Methodology
 
@@ -66,7 +66,7 @@ Among 1307 side effects, 289 were predicted to have associations with more than 
 
 We demonstrated the effectiveness of proposed framework for the identification of potential side effects and targets at large scale. However, this strategy needs to perform prediction twice from different feature sets and thus requires considerable computational burden. For the case study, we could only extract 15 depression-related drug compounds from the online databases for now, and not all types of antidepressants were involved in the experiment, as a result, some information could not obtained through the prediction model. 
 
-In future work, it is expected to gain more knowledge by enlarging the sample data sets and would be reasonable to extend from single drug prediction to drug-drug interaction (DDI) since patients may take more than one medications at the same time with a possibility of increased risk of ADRs. Personalized medicine should also be taken into consideration owing to the fact that variations in the DNA sequences can have impact on how human develop disease and respond to drugs. Some studies have suggested that genes may contribute to the susceptibility to mental health disorder.
+In future work, it is expected to gain more knowledge by enlarging the sample data sets and would be reasonable to extend from single drug prediction to drug-drug interaction (DDI) since patients may take more than one medications at the same time with a possibility of increased risk of adverse drug reactions (ADRs). Personalized medicine should also be taken into consideration owing to the fact that variations in the DNA sequences can have impact on how human develop disease and respond to drugs. Some studies have suggested that genes may contribute to the susceptibility to mental health disorder.
 
 *<p align="center">
 <img src="https://raw.githubusercontent.com/rubychi/thesis-drug-prediction/master/result/visualization/network/rf_antidp_chem_plus_pheno_pred_bio_SSRI%20(network%20visualization).png" alt="Discussion and conclusion">
