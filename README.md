@@ -61,3 +61,8 @@ We demonstrated the effectiveness of proposed framework for the identification o
 
 In future work, it is expected to gain more knowledge by enlarging the sample data sets and would be reasonable to extend from single drug prediction to drug-drug interaction (DDI) since patients may take more than one medications at the same time with a possibility of increased risk of ADRs. Personalized medicine should also be taken into consideration owing to the fact that variations in the DNA sequences can have impact on how human develop disease and respond to drugs. Some studies have suggested that genes may contribute to the susceptibility to mental health disorder.
 
+<img src="https://raw.githubusercontent.com/rubychi/thesis-drug-prediction/master/result/visualization/network/rf_antidp_chem_plus_pheno_pred_bio_SSRI%20(network%20visualization).png" alt="Discussion and conclusion">
+
+*Figure: A detailed exploration into the drug-target associations of three SSRIs - citalopram, escitalopram and fluoxetine<br>
+Solid line indicates a known association, long dash line implies a predicted association while red dotted line shows a validated
+association.*
