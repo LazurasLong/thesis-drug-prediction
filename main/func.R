@@ -1,14 +1,5 @@
 scca <- function(x, y, c1 = 0.1, c2 = 0.1, ncomp = 80) {
   result <- CCA(x = x, z = y, typex = "standard", typez = "standard", penaltyx = c1, penaltyz = c2, K = ncomp, trace = FALSE, standardize = FALSE)
-  ### DON'T KNOW WHY
-  # adjustment of positive and negatieve
-#  for(i in 1:ncomp) {
-#    if(result$u[order(abs(result$u[, i]), decreasing = T)[1], i] < 0) {
-#      result$u[, i] <- -result$u[, i]
-#      result$v[, i] <- -result$v[, i]
-#    }
-#  }
-  ###
   rownames(result$u) <- colnames(x)
   rownames(result$v) <- colnames(y)
   scorex <- x %*% result$u
@@ -38,21 +29,9 @@ scca_pred <- function(x, y, pred) {
   # training
   result <- scca(x, y)
   # testing
-  ### predict score (DON'T KNOW WHY)
-  #> result <- scca(wo_antidp_chem, wo_antidp_bio)
-  #> dim(antidp_chem)
-  #[1]  15 653
-  #> dim(result$u)
-  #[1] 653  80
-  #> dim(diag(result$rho))
-  #[1] 80 80
-  #> dim(t(result$v))
-  #[1]  80 984
   pred_score <- (pred %*% result$u) %*% diag(result$rho) %*% t(result$v)
-  ### DON'T KNOW WHY
   pred_score  <- pred_score * matrix(ysd, nrow = nrow(pred), ncol = ncol(y), byrow = TRUE)
   pred_score  <- pred_score + matrix(ymean, nrow = nrow(pred), ncol = ncol(y), byrow = TRUE)
-  ###
   rownames(pred_score) <- rownames(pred)
   colnames(pred_score) <- colnames(y)
   pred_score
@@ -62,12 +41,10 @@ scca_pred <- function(x, y, pred) {
 svm_pred <- function(x, y, pred) {
   pred_score <- matrix(0, nrow(pred), ncol(y))
   for(i in 1:ncol(y)) {
-    ### DON'T KNOW WHY
     if(length(unique(y[, i])) == 1) {
       # no training
       # testing prediction score
       pred_score[, i] <- rep(-1, nrow(pred))
-    ###
     } else {
       # training
       model <- ksvm(x = x, y = y[, i], type = "C-svc", scaled = TRUE, kernel = "rbfdot", kpar = list(sigma = 0.2), C = 1)
@@ -149,15 +126,6 @@ perf_eval <- function(pred, obs) {
   auroc <- eval_auroc(pred, obs)
   aupr <- eval_aupr(pred, obs)
   # calculate macro-average (global metrics)
-### TROUBLE
-#  global_auroc <- rep(0, ncol(obs))
-#  global_aupr <- rep(0, ncol(obs))
-#  for(i in 1:ncol(obs)) {
-#    global_auroc[i] <- eval_auroc(pred[, i], obs[, i])
-#    global_aupr[i] <- eval_aupr(pred[, i], obs[, i])
-#  }
-#  list(macro_avg = list(auroc = mean(global_auroc), aupr = mean(global_aupr)), micro_avg = list(auroc = auroc, aupr = aupr))
-###
   list(auroc = auroc, aupr = aupr)
 }
 
